@@ -1,0 +1,686 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---------------- Idioma y tipografía ----------------
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% ---------------- Formato ----------------
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{setspace}
+\onehalfspacing
+
+% ---------------- Matemática ----------------
+\usepackage{amsmath,amssymb}
+
+% ---------------- Figuras ----------------
+\usepackage{graphicx}
+\usepackage{float}
+
+% ---------------- Tablas ----------------
+\usepackage{booktabs}
+\usepackage{array}
+
+% ---------------- Hipervínculos ----------------
+\usepackage{hyperref}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+{\LARGE Síntesis De Redes Activas\par}
+\vspace{0.6cm}
+{\Large Trabajo Práctico de Laboratorio\par}
+\vspace{0.2cm}
+{\Large Nº1\par}
+\vspace{1.2cm}
+
+{\large Alumnos: Cesana Andrés, Pieckenstainer Mateo, Ricci Matias, Trucchi Genaro.\par}
+\vspace{0.4cm}
+{\large Profesor: Ferreyra Pablo.\par}
+\vfill
+{\large Año 2024\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% =====================================================
+\section{Introducción}
+
+Este es un trabajo realizado en la materia Síntesis de Redes Activas perteneciente al
+octavo cuatrimestre de la carrera de ingeniería electrónica.
+Todo el marco práctico de la experiencia se realizó en la Facultad de Ciencias Exactas
+Físicas y Naturales de la Universidad Nacional de Córdoba.
+El objetivo de este proyecto es familiarizarse con el armado y análisis de circuitos
+analógicos lineales y no lineales con respecto a los amplificadores operacionales ideales.
+
+% =====================================================
+\section{Marco Teórico}
+
+Los amplificadores lineales integrados son circuitos electrónicos diseñados para
+amplificar señales analógicas de manera proporcional, manteniendo la relación lineal entre la
+entrada y la salida dentro de su rango de operación. Estos dispositivos suelen incluir varias
+etapas internas, como amplificación diferencial, ganancia en tensión y salida. Poseen dos
+entradas, una conocida como no inversora (V+) y otra denominada inversora (V-), y una
+salida (Vo). La salida Vo es el resultado de la diferencia de potencial entre las entradas
+multiplicadas por la ganancia a lazo abierto del amplificador normalmente conocida como Ad
+(Vo=Ad (V+-V-).
+
+En nuestro caso, tomaremos al amplificador operacional como ideal, sin tener en
+cuenta el efecto de los errores sobre la salida, y además que, el ancho de banda es infinito
+(BW $\to \infty$), la impedancia de entrada del operacional infinita (Zi $\to \infty$), la ganancia en modo
+diferencial infinita (Ad $\to \infty$), la ganancia en modo común nula (Ac $\to 0$) y la impedancia de
+salida nula (Zo $\to 0$).
+
+% =====================================================
+\section{Desarrollo}
+
+% -----------------------------------------------------
+\subsection*{Circuito 1: Amplificador diferencial}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura1.png}
+\caption{Figura 1: Circuito propuesto 1}
+\end{figure}
+
+El valor de R = 10K$\Omega$ (Decidido por el grupo de alumnos)
+
+\textbf{Datos:}
+\begin{itemize}
+\item Amplificador Operacional LM324.
+\item Vcc = 10V
+\item Vss = $-10$V
+\item R1 = R2 = R3 = R4 = R5 = R
+\end{itemize}
+
+\textbf{Parámetros a analizar:}
+
+\textbf{ANALÍTICO:}
+\[
+\left( VC = \frac{(V1 + V2)}{2} \quad VD = (V2 - V1) \right)
+\]
+Vo1 = f(V1, V2); Vo1 = f(VD, VC)\\
+Vo2 = f(V1, V2); Vo2 = f(VD, VC)\\
+Impedancia vista por las fuentes de señal.
+
+\textbf{MEDICIÓN - SIMULACIÓN:}\\
+Gráfico Entrada/Salida: Vo1 = f(V1) y Vo1 = f(V2) \quad Vss < V1 , V2 < Vcc\\
+Gráfico Entrada/Salida: Vo1 = f(VC) y Vo2 = f(VC) \quad Vss < VC < Vcc
+
+\subsubsection*{Cálculos:}
+
+\[
+V_{o1} = f(V_1) + f(V_2)
+\]
+\[
+V_1 = V_c - \frac{V_d}{2}
+\qquad
+V_2 = V_c + \frac{V_d}{2}
+\]
+\[
+V_c = \frac{(V_1 + V_2)}{2}
+\qquad
+V_d = V_2 - V_1
+\]
+
+\[
+V_{o1}\Big|_{(v1=0)} = -\frac{R2}{R1}\,V_2 = -V_2
+\quad (\text{Configuración inversora})
+\]
+
+\[
+V_{o1}\Big|_{(v2=0)} =
+\left(\frac{R2}{R1//R4}+1\right)V_1 = 3V_1
+\quad (\text{Configuración no inversora})
+\]
+
+Tenemos entonces por superposición que:
+\[
+V_{o1} = V_{o1}\Big|_{(v1=0)} + V_{o1}\Big|_{(v2=0)}
+\]
+\[
+V_{o1} = 3V_1 - V_2
+\]
+
+Realizamos ahora lo mismo para Vo2
+
+\[
+V_{o2}\Big|_{(v1=0 \; y \; v2=0)} = -\frac{R3}{R5}V_{o1}
+= -V_{o1} = -3V_1 + V_2
+\]
+
+\[
+V_{o2}\Big|_{(vo1=0 \; y \; v2=0)} = -\frac{R3}{R1}V_1 = -V_1
+\]
+
+\[
+V_{o2}\Big|_{(vo1=0 \; y \; v1=0)} =
+\left(\frac{R3}{R1//R5}+1\right)V_2 = 3V_2
+\]
+
+Tenemos entonces por superposición que:
+\[
+V_{o2} =
+V_{o2}\Big|_{(v1=0 \; y \; v2=0)}
++
+V_{o2}\Big|_{(vo1=0 \; y \; v2=0)}
++
+V_{o2}\Big|_{(vo1=0 \; y \; v1=0)}
+\]
+
+\[
+V_{o2} = 4(V_2 - V_1)
+\]
+\[
+V_{o2} = 4(V_d + 0V_c)
+\]
+\[
+V_o = 4(V_2 - V_1) = 4(V_d + 0V_c)
+\]
+
+En la configuración de este circuito, notamos que la tensión de salida es la diferencia
+entre las tensiones de entradas, y si aplicamos una tensión común como V1=Vc y V2=Vc con
+Vd=0 tendremos que la salida para modo común será nula. Por ende, este circuito es capaz de
+anular el modo común por completo. De lo analizado anteriormente obtenemos que Ad=4 y
+Ac=0 por lo que RRMC =Ad/Ac $\to \infty$
+
+\subsubsection*{Simulación:}
+
+Realizamos la simulación del circuito en el simulador LT Spice.
+\begin{itemize}
+\item $V_{o1}$ y $V_{o2}$ con: $V1 = 0.5V$ y $V2 = 1V$
+\item $V_{o1}$ y $V_{o2}$ con: $V1 = 1V$ y $V2 = 1V$
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura2.png}
+\caption{Figura 2: Circuito simulado}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura3.png}
+\caption{Figura 3: Vo1 (azul) y Vo2 (verde) con V1= 0.5 V y V2=1V}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura4.png}
+\caption{Figura 4: Vo1 (azul) y Vo2 (verde) con V1= 1 V y V2=1V}
+\end{figure}
+
+% -----------------------------------------------------
+\subsection*{Circuito 2: Fuente de corriente controlada por tensión}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{figura5.png}
+\caption{Figura 5: Circuito propuesto 2}
+\end{figure}
+
+\textbf{Datos:}
+\begin{itemize}
+\item Amplificador Operacional LM324.
+\item Vcc = 10V
+\item Vss = $-10$V
+\item R1 = 100$\Omega$; R2 = 10K$\Omega$; R3 = 1K$\Omega$; R4 = 100K$\Omega$
+\end{itemize}
+
+\textbf{Parámetros a analizar:}\\
+IRL = f(RL, VIN); Vo = f(VIN, RL); RLmax = f(VIN)
+
+\subsubsection*{Cálculos:}
+
+Para analizar el circuito propuesto, se propone expresar V + (la entrada no inversora del AO)
+y V − (la entrada inversora del AO) en funci´on del Vo, planteando el divisor resistivo en el
+nodo ”2”de la figura:
+
+\[
+V^+ = V^- = V_o \frac{R4}{R4+R2}
+\]
+
+Y planteamos Kirchhoff en el nodo 3:
+
+\[
+\frac{V_{in}-V^+}{R3} + \frac{V_o - V^+}{R1} = \frac{V^+}{RL}
+\]
+
+\[
+\frac{V_{in}}{R3} + \frac{V_o}{R1} = V^+\left(\frac{1}{RL}+\frac{1}{R1}+\frac{1}{R3}\right)
+\]
+
+Y reemplazamos $V^+$:
+
+\[
+\frac{V_{in}}{R3} + \frac{V_o}{R1}
+=
+V_o \frac{R4}{R4+R2}
+\left(
+\frac{1}{RL} + \frac{1}{R1} + \frac{1}{R3}
+\right)
+\]
+
+\[
+V_{in} =
+V_o \left[
+\frac{1}{RL}
+\left(
+R3 \frac{R4}{R4+R2}
+\right)
++
+\left(
+R3 \frac{R4}{R4+R2}
+\right)
+\left(
+\frac{1}{R1} + \frac{1}{R3}
+\right)
+-
+\frac{R3}{R1}
+\right]
+\]
+
+
+Reemplazamos los valores de las resistencias:
+
+\[
+V_{in} = V_o\left[\frac{1}{RL}(909,09091)\right]
+\]
+
+La corriente de la carga es:
+
+\[
+I_{RL}=\frac{V^+}{RL}
+\]
+
+\[
+I_{RL} = V_o\frac{R4}{R4+R2}\frac{1}{RL}
+\]
+
+\[
+I_{RL}=\frac{V_{in}}{R3}
+\]
+
+\[
+I_{RL} = V_{in}\,10^{-3}
+\]
+
+Y definimos la tensión Vo en función de RL y de Vin:
+
+\[
+V_o=\frac{V_{in}}{\left(\frac{1}{RL}(909,09091)\right)}
+\]
+
+\[
+V_o = V_{in}\,RL\,(1.1 \cdot 10^{-3})
+\]
+
+Ahora, se determina el valor de RLmax, que, como el AO es ideal, la tensión de salida
+máxima será VCC=10 V. Por lo que se obtiene:
+
+\[
+RL_{max}=\frac{9090}{V_{in}}
+\]
+
+Se pueden realizar las siguientes tablas:
+
+\begin{table}[H]
+\centering
+\caption{Tabla 1: Valores teóricos de IRL en funcion de RL y de Vin}
+\begin{tabular}{c c c c}
+\toprule
+\textbf{IRL[$\mu$A]} & \textbf{0.5} & \textbf{1} & \textbf{2} \\
+\midrule
+5*RL[K$\Omega$] & 0 & 0 & 0 \\
+1 & 500 & 1000 & 2000 \\
+2 & 500 & 1000 & 2000 \\
+5 & 500 & 1000 & 2000 \\
+10 & 500 & 1000 & 2000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Tabla 2: Valores teóricos de Vo en función de RL y de Vin}
+\begin{tabular}{c c c c}
+\toprule
+\textbf{Vo[V]} & \textbf{0.5} & \textbf{1} & \textbf{2} \\
+\midrule
+5*RL[K$\Omega$] & 0 & 0 & 0 \\
+1 & 0.55 & 1.1 & 2.2 \\
+2 & 1.1 & 2.2 & 4.4 \\
+5 & 2.75 & 5.5 & 11 \\
+10 & 5.5 & 11 & 22 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Los valores que superen la tensión Vcc, la salida se enclava en ese mismo valor y la onda se
+recortará
+
+\subsubsection*{Simulación:}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura6.png}
+\caption{Figura 6: Circuito simulado}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura7.png}
+\caption{Figura 7: Corriente de la carga en función de RL y Vin}
+\end{figure}
+
+Se realizó un barrido en continua de 0 a 10 V, y se puede ver que la variación de corriente es
+lineal hasta el punto de tensión de cada valor de la resistencia de carga que satura al AO
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c c}
+\toprule
+RL & Vin-sat \\
+\midrule
+1K & 7,4V \\
+2K & 3,9V \\
+5K & 1,5V \\
+10K & 0,8V \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura8.png}
+\caption{Figura 8: Vo en función de RL y Vin}
+\end{figure}
+
+Vemos que la tensión de entrada y la resistencia RL, varían la salida Vo
+
+\begin{table}[H]
+\centering
+\caption{Cuadro 3: Valores simulados de IRL en función de RL y Vin}
+\begin{tabular}{c c c c}
+\toprule
+\textbf{IRL[$\mu$A]} & \textbf{0.5} & \textbf{1} & \textbf{2} \\
+\midrule
+RL[K$\Omega$] & 0 & 0 & 0 \\
+1 & 495 & 994 & 1992 \\
+2 & 494 & 992 & 1989 \\
+5 & 493 & 990 & 1567 \\
+10 & 489 & 777 & 780 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% -----------------------------------------------------
+\subsection*{Circuito 3: Rectificador de precisión}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.80\textwidth]{figura9.png}
+\caption{Figura 9: Circuito propuesto 3}
+\end{figure}
+
+Amplificador Operacional LM324.\\
+Vcc = 10V\\
+Vss = $-10$V\\
+R1 = 100$\Omega$; R2 = 10K$\Omega$; R3 = 1K$\Omega$; R4 = 100K$\Omega$
+
+\textbf{Parámetros a analizar:}\\
+Vo1 = f(Vin), Vo2 = f(Vin); con 0V < Vin (Ignorar Rd del diodo)\\
+Vo1 = f(Vin), Vo2 = f(Vin); con Vin > 0V (Ignorar Rd del diodo)
+
+\subsubsection*{Cálculos:}
+
+Debemos realizar el análisis para dos condiciones de funcionamiento distintas:
+\begin{itemize}
+\item Vin>0 entonces el diodo 1 no conducirá, y el diodo 2 si lo hará. La resistencia R1,
+producirá realimentación debido a que entre R1 y R2 no habrá diferencia de potencial.
+Entendemos entonces que el amplificador 1, está trabajando como seguidor de
+tensión.
+\item Vin<0 entonces el diodo 1 no conducira, y el diodo 2 entrará en conducción
+\end{itemize}
+
+Analizamos para la primera condición:
+
+\[
+V_o\Big|_{v^+=V_i}=\left(\frac{R4}{R2+R4}+1\right)V_{in}=\frac{5}{3}V_{in}
+\]
+
+\[
+V_o\Big|_{v^-=V_i}=-\frac{R1}{R2+R1}V_{in}=-\frac{2}{3}V_{in}
+\]
+
+Entonces $\rightarrow V_{oT}=V_{in}$
+
+Analizamos para la segunda condición:
+
+\[
+V_o\Big|_{v^+=V_i}=\left(\frac{R4}{R4}+1\right)V_{in}=3V_{in}
+\]
+
+\[
+V_o\Big|_{v^-=V_i}=-\frac{R4}{R1}V_{in}=-4V_{in}
+\]
+
+Entonces $\rightarrow V_{oT}=-V_{in}$
+
+\subsubsection*{Simulación:}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura10.png}
+\caption{Figura 10: Circuito simulado}
+\end{figure}
+
+Utilizamos una señal senoidal de 2 V de amplitud, para ver el comportamiento de la tensión
+de salida de ambos amplificadores.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura11.png}
+\caption{Figura 11: Vo1 (azul) y Vo2 (rojo) con Vin=2V (verde)}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura12.png}
+\caption{Figura 12: Vo1 (azul) y Vo2 (rojo) con Vin=4.5V (verde). Este es el límite de saturación de la salida del primer amplificador}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura13.png}
+\caption{Figura 13: Vo1 (azul) y Vo2 (rojo) con Vin=5V (verde). La rectificación de la señal se ve distorsionada por la saturación del primer OA.}
+\end{figure}
+
+Se puede ver entonces que el rectificador funciona bien dentro del rango -4,5 V y 4,5 V. Sin
+embargo, para valores que no se encuentran en dicho rango, la salida se distorsiona debido a
+la saturación de la salida del primer OA
+
+% -----------------------------------------------------
+\subsection*{Circuito 4: Comparador con histéresis}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.70\textwidth]{figura14.png}
+\caption{Figura 14: Circuito propuesto 4}
+\end{figure}
+
+Amplificador Operacional LM324.\\
+V+ = 10V\\
+V- = 0V\\
+R1 = R2 = R4 = 10K$\Omega$; R3 = 2K$\Omega$\\
+Vref=2V
+
+\textbf{Parámetros a analizar:}
+\begin{itemize}
+\item Umbral de conmutación cuando Vo = V+
+\item Umbral de conmutacion cuando Vo = V-
+\item Vo = f(Vin) con V- < Vin < V+
+\end{itemize}
+
+\subsubsection*{Cálculos:}
+
+Consideramos el caso general con alimentación simétrica. Se analiza también Vo a partir de
+la tensión diferencial y el caso particular con Vss=0. Se definen v+ y v- así:
+
+\[
+v^- = k_1 \cdot V_{in}
+\qquad
+v^+ = k_2 (V_o - V_{ref}) + V_{ref}
+\]
+
+Teniendo que:
+
+\[
+k_1=\frac{R2}{R1+R2}
+\qquad
+k_2=\frac{R3}{R3+R4}
+\]
+
+Si Vd<0, la salida del amplificador debería ser Vss:
+
+\[
+V_d = (v^+ - v^-) < 0 \Rightarrow V_o = V_{ss}
+\]
+
+Entonces:
+
+\[
+v^+ < v^- \Rightarrow
+k_2 (v_o - v_{ref}) + v_{ref} < k_1 v_{in}
+\]
+
+\[
+\frac{k_2}{k_1}(v_o - v_{ref}) + \frac{v_{ref}}{k_1} < v_{in}
+\]
+
+\[
+\frac{k_2}{k_1}v_o + \frac{1-k_2}{k_1}v_{ref} < v_{in}
+\]
+
+\[
+v_o = v_{cc}
+\qquad
+v_{cc}=10V
+\qquad
+v_{ref}=2V
+\]
+
+
+\[
+v_{in} > 6,67V \Rightarrow v_o = v_{ss}
+\]
+
+Ahora si Vd>0, la salida de un AO ideal debería ser Vcc:
+
+\[
+V_d = (v^+ - v^-) > 0 \Rightarrow V_o = V_{cc}
+\]
+
+Entonces:
+
+\[
+v^+ > v^- \Rightarrow
+k_2 (v_o - v_{ref}) + v_{ref} > k_1 v_{in}
+\]
+
+\[
+\frac{k_2}{k_1}(v_o - v_{ref}) + \frac{v_{ref}}{k_1} > v_{in}
+\]
+
+\[
+\frac{k_2}{k_1}v_o + \frac{1-k_2}{k_1}v_{ref} > v_{in}
+\]
+
+\[
+v_o = v_{ss}
+\qquad
+v_{cc}=-10V
+\qquad
+v_{ref}=2V
+\]
+
+R3 = 2K$\Omega$\\
+R1 = R2 = R4 = 10K$\Omega$
+
+\[
+v_{in} < 0V \Rightarrow v_o = v_{cc}
+\]
+
+Entonces tenemos que:
+
+\[
+v_o(v_{in}) = v_{cc} \;\; \text{para} \;\; v_{in} < 0V
+\]
+\[
+v_o(v_{in}) = v_{ss} \;\; \text{para} \;\; v_{in} > 6,67V
+\]
+
+Si Vss=0, entonces la relación queda:
+
+\[
+\frac{1-k_2}{k_1} v_{ref} > v_{in}
+\]
+
+Donde se ve que el punto de conmutación queda directamente dependiente de vref
+
+Reemplazamos por los valores. entonces queda:
+
+Si: $v_{in} < 3,33V \Rightarrow v_o = v_{ss}$
+
+Los análisis anteriores son válidos para un amplificador ideal o de tipo Rail to Rail, en este
+caso obtenido por simulación sa salida máxima del AO es de 8,5 V, entonces queda:
+
+Si: $v_{in} > 6,17V \Rightarrow v_o = v_{cc}$
+
+\subsubsection*{Simulación:}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura15.png}
+\caption{Figura 15: Circuito simulado}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura16.png}
+\caption{Figura 16: Vo1=f(vin) con Vin= 5V y 1KHz}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figura17.png}
+\caption{Figura 16: Vo1=f(vin) con Vin= 5V y 1KHz}
+\end{figure}
+
+Se puede ver así, como a diferencia de un comparador normal que compara dos voltajes de
+entrada y genera una señal de salida alta o baja según cuál de ellos sea mayor, un comparador
+con histéresis incorpora una especie de memoria en el circuito, lo cual implica que, una vez
+que la salida ha cambiado de estado,se necesita un cambio más significativo en la senal de
+entrada para que la salida vuelva a conmutar. Esta característica es especialmente útil en
+aplicaciones como la detección de niveles, el control de motores y los circuitos de disparo, ya
+que ayuda a evitar cambios erráticos en la salida debido a ruidos o fluctuaciones pequeñas en la
+señal de entrada.
+
+% =====================================================
+\section{Conclusión}
+
+En el trabajo, se pudo relacionar conceptos con respecto a los amplificadores operaciones, y
+sus usos básicos, combinados con componentes simples con diferentes disposiciones en los
+circuitos.
+Ya sea con el amplificador diferencial, la fuente de corriente controlada por tensión, el
+rectificador de precisión o el comparador por histéresis, fue interesante el poder jugar y variar
+los valores, para observar los diferentes comportamientos de los circuitos, como así también,
+tener una nocion y practica, por sobre estos mismos.
+Creemos que el trabajo fue eficiente y fructífero para nuestro conocimiento y estamos
+satisfechos con el trabajo realizado.
+
+\end{document}
