@@ -1,0 +1,64 @@
+\documentclass[12pt, letterpaper, oneside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{vmargin}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage[american, siunitx]{circuitikz}
+\usepackage{circuitikz}
+\usepackage{siunitx}
+\usepackage{graphicx} % Necesario para resizebox
+\usepackage{float}    % Opcional, para usar [H] si quieres forzar la posición
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{lipsum}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage{listings}  % Paquete para código
+\usepackage{xcolor}    % Colores para resaltar sintaxis
+\usepackage{datetime}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage[es-ES]{datetime2}
+\usepackage[spanish]{babel}
+\newdateformat{monthyeardate}{%
+	\monthname[\THEMONTH], \THEYEAR}
+	
+\setpapersize{A4}
+\setmargins{2.2cm}			%Márgen izquierdo
+			{1cm}			%Márgen superior
+			{16.5cm}		%Ancho del área de impresión
+			{23.42cm}		%Longitud del área de impresión
+				{30pt}		%Encabezado
+			{5mm}			%Espacio entre el encabezado y el documento
+			{2pt}			%Pié de página
+			{5mm}			%Espacio entre el pié de página y el documento 
+			
+\begin{document}
+
+	\include{Caratula}
+	
+	%--Encabezado y Pié de Página--%
+	\pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[R]{\includegraphics[width=7cm]{img/color_UNC-FCEFyN.png}}
+    \fancyhead[L]{Síntesis de Redes Activas - Diseño Amplificadores}
+    \fancyfoot[R]{\thepage}
+    \renewcommand{\headrulewidth}{0.1pt}
+
+    % agregamos el indice
+    \tableofcontents
+    \newpage
+
+    \input{Desarrollo_Teorico}
+    
+    \input{Desarrollo1}
+	\pagebreak
+\end{document}
