@@ -1,0 +1,235 @@
+\newpage
+\section{Objetivos}
+
+En este trabajo de laboratorio se busca compensar y estabilizar un amplificador de tecnología \textbf{VFA} mediante tres métodos diferentes:  
+\begin{enumerate}
+    \item Un \textbf{VFA} de la misma tecnología.
+    \item Un amplificador de tecnología \textbf{CFA}.
+    \item El mismo \textbf{CFA}, pero con una red pasiva intermedia para la introducción de ceros y polos.
+\end{enumerate}
+
+Para el análisis, se utilizan los amplificadores \textbf{LM324} (VFA de dos polos) y \textbf{LM6181} (CFA de dos polos).  
+
+El sistema debe cumplir con ciertas especificaciones, como una ganancia de \textbf{20 dB} y una máxima planicidad del módulo, es decir, un \textbf{Qp de 0.707} o un margen de fase de \textbf{65°}. Para lograr esto, se diseña un \textbf{compensador} o \textbf{controlador}, adaptado a los requisitos específicos de cada caso y utilizando las tecnologías mencionadas.  
+
+El modelo general del amplificador compuesto a analizar es el siguiente:
+
+\begin{figure}[h]
+			\centering
+			\includegraphics[scale = 0.8]{img/Circuito.png}
+            \caption{Esquema del amplificador compuesto}
+		\end{figure}
+
+\section{Introducción teórica:}
+\subsection{Amplificador Realimentado por Tensión (VFA)}
+\hspace{1mm} Los amplificadores operacionales de realimentación de voltaje (VFA, por sus siglas en inglés) son un tipo de amplificador en el que la señal de realimentación se basa en la diferencia de voltaje entre sus terminales de entrada. Estos amplificadores son ampliamente utilizados en aplicaciones de procesamiento de señales, instrumentación y sistemas de control.
+
+\subsubsection{Principios de Funcionamiento}
+Un amplificador VFA tiene dos entradas: la entrada inversora (-) y la entrada no inversora (+). Su salida está gobernada por la ecuación general:
+\begin{equation}
+    V_{out} = A_v (V_+ - V_-)
+\end{equation}
+Donde $A_v$ es la ganancia en lazo abierto del amplificador, y $V_+$ y $V_-$ son los voltajes en las entradas no inversora e inversora, respectivamente.\\Mediante una red de componentes pasivos se realimenta, usualmente de forma negativa para poder controlar la estabilidad de los amplificadores.
+
+\begin{figure}[!h]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/2. VFA.png}
+        \caption{Representación VFA}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/3. VFA Modelo de amplificador real.png}
+        \caption{Representación Circuital del VFA}
+    \end{minipage}
+\end{figure}
+
+\subsubsection{Características Principales}
+Los amplificadores VFA presentan las siguientes características:
+\begin{itemize}
+    \item Alta impedancia de entrada.
+    \item Baja impedancia de salida.
+    \item Respuesta de frecuencia adecuada para aplicaciones de baja y media velocidad.
+    \item Generalmente tienen una mayor ganancia en lazo abierto comparados con los amplificadores de realimentación de corriente (CFA).
+\end{itemize}
+
+
+\subsection{Amplificadores de Realimentación de Corriente (CFA)}
+
+Los amplificadores de realimentación de corriente (CFA, por sus siglas en inglés Current Feedback Amplifiers) son una clase de amplificadores operacionales que difieren de los amplificadores de realimentación de voltaje (VFA) en la manera en que reciben y procesan la realimentación. A diferencia de los VFA, donde la realimentación se basa en el voltaje diferencial de las entradas, los CFA utilizan la realimentación basada en corriente, lo que les proporciona ventajas significativas en términos de ancho de banda y velocidad de respuesta.
+
+\begin{figure}[h]
+			\centering
+			\includegraphics{img/CFA.png}
+            \caption{Representación CFA}
+		\end{figure}
+
+\subsubsection{Principio de Funcionamiento}
+
+El principio clave de los CFA radica en su estructura interna. En lugar de una etapa diferencial de entrada como en los VFA, los CFA poseen una entrada de baja impedancia (la inversora) y una entrada de alta impedancia (la no inversora). La realimentación de corriente permite mantener una corriente constante en la entrada inversora, lo que minimiza el efecto de la capacitancia de compensación y mejora la velocidad del amplificador.
+
+\subsubsection{Características Principales}
+
+Los amplificadores CFA presentan las siguientes características distintivas:
+
+\begin{itemize}
+    \item Alto ancho de banda, independientemente de la ganancia configurada.
+    \item Rápida velocidad de respuesta debido a la menor capacitancia de compensación.
+    \item Menor distorsión en aplicaciones de alta frecuencia en comparación con los VFA.
+    \item Alta linealidad, lo que los hace adecuados para aplicaciones de procesamiento de señales.
+\end{itemize}
+
+
+\subsubsection{Comparación con los VFA}
+
+A diferencia de los VFA, donde el ancho de banda disminuye a medida que la ganancia aumenta, los CFA pueden mantener un alto ancho de banda incluso a ganancias elevadas debido que tienen un polo movil. Sin embargo, tienen una menor precisión de CC y un mayor ruido de entrada en comparación con los VFA, lo que los hace menos adecuados para aplicaciones de baja frecuencia o medición precisa.\\
+En conclusión, los amplificadores CFA representan una excelente opción para aplicaciones que requieren alta velocidad y amplio ancho de banda, ofreciendo ventajas clave sobre los VFA en estos aspectos.
+
+\subsection{Compensación por Adelanto}
+
+\hspace{1mm} También denominado \textit{cero-polo} se caracteriza por generar un cero (\( f_{zx} \)) a frecuencia igual o superior al segundo polo original, corriendo de esta manera el atraso producido por este a frecuencias inferiores a la del punto crítico, mientras que el polo adjunto (\( f_{px} \)) se ubica fuera de la banda de utilización, tal que la ganancia de lazo del amplificador compensado puede expresarse como:
+
+\bigskip
+\hspace{1mm} Si \( \omega _{o2} \leq \omega _{zx} < \omega _G \) y \( \omega _{pz} \geq \geq \omega _G \)
+
+\begin{equation}
+    A_c (s) = \frac{1 + \frac{s}{\omega _{zx}}}{1 + \frac{s}{\omega _{px}}}
+\end{equation}
+
+\bigskip
+\hspace{1mm} Por lo tanto.
+
+\begin{equation}
+    T'(s) = - \frac{T(0) (1 + s/\omega _{zx})}{(1 + s/ \omega _{01})(1 + s/ \omega _{o2})}
+\end{equation}
+
+\subsection{Red Paralelo Serie}
+
+\bigskip
+\hspace{1mm} Esta red esta compuesta por un capacitor y dos resistencias distribuidas de la siguiente manera.
+
+\bigskip
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=1]{img/Red paralelo serie.png}
+    \caption{Red Paralelo Serie}
+\end{figure}
+
+\begin{equation}
+    A_C (s) = \frac{V_o}{V_{in}} = \left( \frac{R}{R + R} \right) \cdot \frac{1 + sC_x R_x}{1 + sC_x (R_x // R_y)} = A(0) \cdot \frac{1 + s/\omega _{zx}}{1 + s/ \omega _{px}}
+\end{equation}
+
+\newpage
+\subsection{Máxima Planicidad de Módulo}
+
+\hspace{1mm}En aplicaciones de alta velocidad y ancho de banda, como procesamiento de señales de video y redes activas, se requieren sistemas realimentados que cumplan estrictos requisitos de ganancia, ancho de banda y distorsión de frecuencia/fase. Para optimizar el rendimiento, los amplificadores deben operar al límite de su capacidad, lo que requiere una coordinación cuidadosa entre la estabilidad del sistema y los requisitos de respuesta. Las especificaciones comunes incluyen minimizar la distorsión de frecuencia y fase en la banda de transmisión y maximizar el producto ganancia-ancho de banda. El análisis busca establecer las relaciones necesarias entre los coeficientes de la ganancia de lazo cerrado para cumplir con estos requisitos en la síntesis del sistema realimentado. Además, se considera que la ganancia del sistema en lazo cerrado presenta dos polos cuyo carácter depende de la cantidad de realimentación introducida y que la red externa al elemento activo se expresa como cociente de polinomios racionales en la variable compleja (s).
+
+\begin{equation}
+    Af(s) =  \frac{V_o}{V_{in}} = \frac{Av (s)}{1 - T(s)} = \frac{N(s)}{D(s)}
+\end{equation}
+
+\bigskip
+\hspace{1mm} Dicha ecuación tiene como límites que el polinomio del denominador es como máximo de segundo grado y el polinomio del numerador no puede exceder el grado del denominador.
+
+\hspace{1mm} Desarrollando dicha fórmula se obtiene la siguiente expresión.
+
+\begin{equation}
+    af(j \Omega) = \frac{(1 - n_2 \Omega ^2) + jn_1 \Omega}{(1 - d_2 \Omega ^2) + jd_1 \Omega}
+\end{equation}
+
+\bigskip
+\hspace{1mm} Tomando módulo se deducen las relaciones que deben cumplir los coeficientes de la GLC para satisfacer la condición de máxima planicidad de módulo en la banda de transmisión.
+
+\begin{equation}
+    |af(\Omega)|^2 = \frac{(1 - n_2 \Omega ^2)^2 + (n_1 \Omega)^2}{(1 - d_2 \Omega ^2)^2 + (d_1 \Omega)^2}
+\end{equation}
+
+\begin{equation}
+    |af(\Omega)|^2 = \frac{1 + a_1 \Omega ^2 + a_2 \Omega^4}{1 + b_1 \Omega ^2 + b_2 \Omega^4}
+\end{equation}
+
+\bigskip
+\hspace{1mm} De la ecuación (7), función par en \( \Omega \), se infiere que la condición de invariancia del módulo con la frecuencia exige que los coeficientes de la potencias homólogas sean iguales.
+
+\begin{equation}
+    |af(\Omega)| = Cte \Longrightarrow a_i = b_i \quad para \quad 0 \leq \Omega \leq \infty
+\end{equation}
+
+\bigskip
+\hspace{1mm} La red que satisface esta condición se denomina pasa todo.
+
+\bigskip
+\hspace{1mm} Particularmente interesa profundizar el análisis en el caso en que N(s) sea de grado cero, por lo tanto.
+
+\begin{equation}
+    af(s) = \frac{1}{1 + \frac{s}{Q_p} + s^2}
+\end{equation}
+
+\begin{equation}
+    |af(\Omega )|^2 = \frac{1}{1 + \Omega ^2 \left(\frac{1}{Q_p^2} - 2\right) + \Omega ^4}
+\end{equation}
+
+\bigskip
+\hspace{1mm} Los valores de los coeficientes de esta última, en relación a la expresión general son respectivamente.
+
+\begin{gather*}
+    b_1 = \frac{1}{Q_p^2} - 2 \quad b_2 = 1 \quad a_1 = 0 \quad a_2 = 0
+\end{gather*}
+
+
+\bigskip
+\hspace{1mm} De las cuales, la única que puede satisfacer para maxima planicidad de módulo.
+
+\begin{equation}
+    b_1 = a_1 \Longrightarrow Q_p = \frac{1}{\sqrt{2}}
+\end{equation}
+
+\bigskip
+\hspace{1mm} Si esto se cumple, la expresión del módulo normalizado de la ganancia de lazo cerrado queda.
+
+\begin{equation}
+    |af(\Omega)| = \frac{1}{\sqrt{1 + \Omega ^4}}
+\end{equation}
+
+\bigskip
+\hspace{1mm} La frecuencia de corte de \(3~dB\) deducida resulta.
+
+\begin{equation}
+    \frac{1}{\sqrt{1 + \Omega _H ^4}} = \frac{1}{\sqrt{2}} \Longrightarrow \Omega _H = 1 \Longrightarrow \omega _H = \omega _p
+\end{equation}
+
+\bigskip
+\hspace{1mm} Es importante notar que en la banda de transmisión, la frecuencia normalizada \( \Omega \) siempre es menor que uno, excepto en el extremo \( \Omega H \). Por lo tanto, el término de la potencia cuarta en la expresión del módulo tiene un impacto mínimo, lo que permite maximizar su planicidad.
+
+\hspace{1mm} Para evaluar el margen de fase asociado a esta solución, es necesario conocer la ganancia de lazo involucrada.
+
+\begin{equation}
+    Avf (s) = \frac{Avf_i}{1 - \frac{1}{T(s)}} \Longrightarrow af(s) = \frac{1}{1 - \frac{1}{T(s)}} \approxeq \frac{1}{1 + \frac{s}{Q_p} + s^2}
+\end{equation}
+
+\bigskip
+\hspace{1mm} De la cual se deduce la ganancia de lazo en términos normalizados.
+
+\begin{equation}
+    T(s) = - \frac{1}{\frac{s}{Q_p} + s^2} = - \frac{1}{s (s + \frac{1}{Q_p})}
+\end{equation}
+
+\bigskip
+\hspace{1mm} La determinación de la frecuencia del punto crítico se obtiene a partir de la aplicación de la condición de módulo a la ecuación anterior con \( Q_p = 1/\sqrt{2} \)
+
+\begin{equation}
+    |T(\Omega G)| = 1 \Longrightarrow \Omega _G ^4 + \frac{1}{Q_p^2} \cdot \Omega_G^2 - 1 = 0 \Longrightarrow \Omega _G = 0,644
+\end{equation}
+
+\begin{equation}
+    \omega _G = 0,644 \omega _p
+\end{equation}
+
+\bigskip
+\hspace{1mm} Finalmente, el margen de fase involucrado resulta.
+
+\begin{equation}
+    M \phi = \angle T(\Omega G) + 180 ^o = -90^o - tg^1 ( \Omega _G \cdot Q_p) + 180^o = 65,5^o 
+\end{equation}
