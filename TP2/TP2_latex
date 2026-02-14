@@ -1,0 +1,687 @@
+%------------------------------------ Inicio ---------------------------------------
+\documentclass[11pt, a4paper]{article}
+
+% -------------- Nombre del documento --------------
+\newcommand{\nombre}{Trabajo Practico N°2}
+%---------------------------------------------------------
+
+%-------------------- Include Paquetes iniciales---------------------
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{float} 
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{circuitikz}
+\usepackage{colortbl}
+\geometry{top=35mm,bottom=30mm,left=33mm,right=33mm,headsep=15mm}
+\usepackage{relsize} % agranda a un mas las letras
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lastpage} % nos dice el numero total de paginas
+\usepackage{fancyhdr} % modifica encabezado y pie de pagina
+\pagestyle{fancy} % Con ésto aplicamos el encabezado y pie 
+\renewcommand{\headrulewidth}{0.2pt} % linea encabezado tamaño
+\renewcommand{\footrulewidth}{0pt} % linea pie de pagina tamaño
+
+\cfoot{}
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+\lhead{\includegraphics[scale=0.12]{Imagenes/logounc.jpg}}
+\rhead{\nombre}
+%-----------------------------------------------------------------------
+
+
+\begin{document}
+
+%--------------------  Portada ---------------------
+
+
+\begin{center}
+	{\huge\textbf{SINTESIS DE REDES}} \\
+	\vspace{3mm}
+	{\huge\textbf{ACTIVAS}} \\
+	\vspace{10mm}
+	{\large -}
+	\vspace{2mm}
+	
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{Imagenes/logoPrincipal.png}
+\end{figure}
+\vspace{10mm}
+\textscale{3}{ \textbf{\nombre}} \\
+\vspace{8mm}
+\textscale{1.6}{ AO REAL: Errores\textbf{}}\\
+\vspace{6mm}
+	\textscale{1.3}{ Síntesis de Redes Activas - 2024\textbf{}}\\
+	\vspace{15mm}
+	---------------------------------------------\-\\
+	\vspace{15mm}
+	\textscale{1.3}{\textbf{Integrantes}}\\
+	\vspace{6mm}
+	\textscale{1.3}{Cesana Andres Agustin}\\
+ \vspace{2mm}
+	\textscale{1.3}{Pieckenstainer Mateo}\\
+ \vspace{2mm}
+	\textscale{1.3}{Ricci Matias Agustin} \\
+     \vspace{2mm}
+	\textscale{1.3}{Trucchi Genaro} \\
+	\vspace{15mm}
+	\textscale{1.3}{\textbf{Profesores adjuntos}}\\
+ \vspace{6mm}
+ \textscale{1.3}{Dr. Ing. Pablo A. Ferreyra}\\
+ \vspace{2mm}
+ \textscale{1.3}{Ing. César Reale}\\
+	\thispagestyle{empty}
+\end{center}
+\clearpage
+%----------------------------fin portada-----------
+\thispagestyle{empty}
+\tableofcontents
+\clearpage
+
+
+% ------------------------------------- Desarrollo ---------------------------------
+\pagenumbering{arabic}
+
+\newpage
+\section{Consigna}
+\paragraph{}
+\subsection{Objetivos}
+Introducir al estudiante en el diseño, armado, medición y análisis de circuitos
+amplificadores lineales, teniendo en cuenta las fuentes de error del AO real, y como se
+relacionan con las condiciones de entorno del circuito. En este caso se realiza mediante la implementación de un circuito sumador
+\paragraph{}
+Los errores sobre los cuales se realiza el análisis son:
+\begin{itemize}
+    \item \textbf{Errores en DC:}
+    \begin{enumerate}
+	\item Error de tensión, $v_{os}$.
+	\item Error de corriente, $I_{os}$.
+	\item Error por $A_d<\infty$.
+        \item Error por $RRMC<\infty$.
+    \end{enumerate}
+    \item \textbf{Errores en AC:}
+    \begin{enumerate}
+        \item Error vectorial.
+        \item Ancho de banda a plena potencia.
+        \item Ancho de banda para pequeña señal.
+    \end{enumerate}
+\end{itemize}
+\paragraph{}
+Para cada circuito, se realizará un análisis teórico, simulaciones y mediciones experimentales. Finalmente, se van a comparar los datos obtenidos en cada etapa.
+\newpage
+\section{Circuito I: Sumador Inversor}
+\begin{figure}[htb]
+	\centering
+	\begin{tikzpicture}
+	% Paths, nodes and wires:
+	\node[op amp] at (8.56, 4){};
+	\draw (4.5, 4.5) to[american resistor] (6.5, 4.5);
+	\draw (7.5, 5.75) to[american resistor] (9.5, 5.75);
+	\draw (4.5, 3.5) to[american resistor] (6.5, 3.5);
+	\node[ground] at (7, 2.5){};
+	\draw (6.5, 4.5) -| (7.37, 4.49);
+	\draw (7.5, 5.75) -- (7, 5.75) -| (7, 4.5);
+	\draw (6.5, 3.5) -- (6.75, 3.5) -| (6.75, 4.5);
+	\draw (7.37, 3.51) |- (7, 3.5) -| (7, 2.5);
+	\draw (4, 3.5) to[american voltage source] (4, 1.5);
+	\draw (2.75, 4.5) to[american voltage source] (2.75, 2.75);
+	\node[ground] at (2.75, 2.75){};
+	\node[ground] at (4, 1.5){};
+	\draw (4.5, 4.5) -- (2.75, 4.5);
+	\draw (4.5, 3.5) |- (4, 3.5);
+	\draw (9.5, 5.75) -- (10.5, 5.75) |- (10.25, 4) -- (9.75, 4);
+	\draw (10.5, 4) -- (11.25, 4);
+	\node[ocirc] at (11.25, 4){};
+	\draw (8.477, 4.539) -| (8.5, 5);
+	\draw (8.477, 3.461) -| (8.5, 3);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (1.625, 3.375){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (1.25, 3.75){V1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (3.375, 1.875){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (3, 2.25){V2};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (5.5, 5.125){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (5.125, 5.5){R};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (5.375, 2.875){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (5, 3.25){R};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (8.375, 6.375){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (8, 6.75){Rf};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (11.625, 4){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (11.25, 4.375){Vo};
+	\draw[line width=2.5pt] (4.5, 4.5) -- (4.5, 4.75) -- (3.75, 4.75);
+	\draw[line width=2.9pt] (4.5, 3.5) |- (3.75, 3.75);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (4, 5){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (3.625, 5.375){Zi1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (4, 4){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (3.625, 4.375){Zi2};
+\end{tikzpicture}
+	\caption{Circuito propuesto}
+\end{figure}
+\subsection{Requisitos}
+Para el desarrollo del presente trabajo se empleará un circuito sumador inversor utilizando el amplificador operacional \textit{LM324}. El circuito debe cumplir con las siguientes especificaciones:
+\begin{itemize}
+    \item $V_{cc}=10[V]$ y $V_{ss}=-10[V]$
+    \item $A_{v|v_1}=30$, $A_{v|v_2}=30$
+    \item $R_i<<Z_{i1}$, $R_i<<Z_{i2}$
+    \item Emplear resistencias menores a $10[M\Omega]$
+\end{itemize}
+
+\newpage
+
+\section{Análisis teórico}
+A continuación se obtienen las ecuaciones pertinentes para el cálculo de errores.
+
+\subsection{Ganancia ideal en banda de paso}
+\onehalfspacing
+\begin{flushleft}
+    \textbf{Pasivando $V_2$}\\
+    $V_{O}|_{V_2=0}=-\frac{R_f}{R}$ \\
+    \textbf{Pasivando $V_{1}$} \\
+    $V_{O}|_{V_{1}=0}=-\frac{R_f}{R}$ \\
+\end{flushleft}
+\begin{center}
+    \boxed{V_{O}=A_1\cdot v_1 + A_2 \cdot v_2}\\
+    reemplazando con $A_1=A_2=-\frac{R_f}{R}$ \\
+    \boxed{V_{O}=-\frac{R_f}{R}\cdot (v_1+v_2)}
+\end{center}
+
+\subsection{Errores en DC}
+\onehalfspacing
+Del circuito general, pasivando las entradas, se calcula la ganancia de lazo.
+\begin{center}
+    \boxed{T(S)=-\frac{R}{R+2R_f}\cdot A_d(S)}
+\end{center}
+Para obtener las ecuaciones que describen cada error se emplea la ecuación de $Blackman$ y se suponen el resto de las característiscas del amplificador ideal a excepción de la de interés.
+
+\subsubsection{Error por tensión de offset, $v_{os}$}
+\onehalfspacing
+El error por tensión de offset se estima colocando en la entrada no inversora una fuente de tensión constinua de valor $v_{os}$
+\begin{center}
+    \boxed{\frac{V_{O}}{V_{os}} = 1 + \frac{R_f}{R_p}}\\
+    donde $R_p=\frac{R}{2}$; reemplazando \\
+    \boxed{V_{O} = (1 + 2\cdot\frac{R_f}{R}) \cdot v_{os}}
+\end{center}
+
+\subsubsection{Error por corrientes de bias, $I_{os}$}
+\onehalfspacing
+Debido a que no hay una resistencia asociada a la entrada no inversora la corriente $I^{+}_p$ no produce error, en consecuencia el error en la salida solo está definido por $I^{-}_p$
+\begin{center}
+    \boxed{\frac{V_O}{V^{-}}=\frac{R+2R_f}{R}}
+\end{center}
+Donde $V^{-}=I^{-}_p\cdot R_p$, $R_p=\frac{R_f\cdot R}{2R_f+R}$, por lo que resulta,
+\begin{center}
+    \boxed{V_O(I_p^{-})=-I_p\cdot R_f}
+\end{center}
+
+\subsubsection{Error por $A_d<\infty$}
+\onehalfspacing
+La ganancia real de un amplificador puede definirse como:
+\begin{center}
+    \boxed{A_v(s)=\frac{A_{vfi}}{1-\frac{1}{T(s)}}}
+\end{center}
+Donde:
+\begin{itemize}
+    \item $A_{vfi}:$ ganancia ideal para la configuración seleccionada.
+    \item $T(s):$ ganancia de lazo.
+\end{itemize}
+\paragraph{}
+Si $A_d(s)\rightarrow \infty$ entonces $T(s) \rightarrow \infty$ por lo que el error para $A_d(s)<\infty$ como:
+\begin{center}
+    \boxed{\epsilon_{G0}=\frac{1}{T_O}}
+\end{center}
+\paragraph{}
+Luego,
+\begin{align}
+    \nonumber
+    A_{vf}(s) &= \frac{A_{vfi}}{1 + \epsilon_G(s)} \\
+    \nonumber
+    A_{vf}(0) &= \frac{A_{vfi}}{1 + \epsilon_G(0)} \\
+    \nonumber
+    A_{vf}(0) &= A_{vfi}(1-\epsilon_G(0))
+\end{align}
+\paragraph{}
+Despejando $\epsilon_G(0)$ y reordenando,
+\begin{center}
+    \boxed{\Delta V_0 = \epsilon_G(0)\cdot V_{0i}}
+\end{center}
+\paragraph{}
+De la ecuación anterior se tiene que el máximo error sucede cuando $V_{0i}=FS$,
+\begin{center}
+    \boxed{\Delta V_{0, max}(A_d<\infty)=\epsilon_G(0)\cdot FS=\frac{FS}{T_O}}
+\end{center}
+
+\subsubsection{Error por $RRMC<\infty$}
+\onehalfspacing
+Debido a que la entrada no inversora está conectada a masa el error producido por $RRMC<\infty$ resulta despreciable ya que la tensión común es mínima.
+
+\newpage
+
+\subsection{Errores en AC}
+\onehalfspacing
+Para el análsis en AC se debe contemplar la expresión que define el comportamiento de la ganancia del amplificador en función de la frecuencia.
+\begin{center}
+    \boxed{A_{vf}(s)=\frac{A_{vf}(0)}{(1+\frac{s}{\omega_H})}}
+\end{center}
+
+\subsubsection{Ancho de banda a plena potencia}
+\onehalfspacing
+Se define como la máxima frecuencia que puede presentar la señal de entrada para ser reproducida en la salida sin distorsión,
+\begin{center}
+    \boxed{\omega_{HP}=\frac{SR}{V_{pp}}}
+\end{center}
+de donde,
+\begin{itemize}
+    \item $SR:$ Slew-Rate.
+    \item $V_{pp}:$ Tensión pico a pico máxima.
+\end{itemize}
+
+\subsubsection{Ancho de banda de pequeña señal}
+\onehalfspacing
+Se define así al punto donde la ganancia cae $-3dB$ respesto al valor en la banda de paso. Del producto $GBW$ se obtiene,
+\begin{equation}
+   \nonumber
+   \omega_H \cdot A_{vf} = \omega_T 
+\end{equation}
+\begin{center}
+    \boxed{\omega_H = \frac{\omega_T}{A_{vf}}}
+\end{center}
+
+\subsubsection{Error vectorial}
+\onehalfspacing
+Se define como la diferencia entre la ganancia ideal y la real:
+\begin{center}
+    \boxed{E_v=A_{vfi}-A_{vf}(s)}
+\end{center}
+Dado que le resultado lo conforma un vector se puede dividir en \textit{error de ganancia} y \textit{error de fase}.
+\paragraph{}
+\textbf{Error de ganancia}
+\onehalfspacing
+Se define de esta manera a la diferencia entre los módulos real e ideal. Normalizando la ecuación para el error vectorial en función de $A_{vfi}$:
+\begin{align}
+    \nonumber
+    e_v&=|1| - \abs{\frac{1}{1+\frac{s}{\omega_H}}} \\
+    \nonumber
+    e_v &= 1 - \frac{1}{\sqrt{1+\frac{\omega}{\omega_H}^2}}
+\end{align}
+Se puede aproximar a:
+\begin{center}
+    \boxed{e_v = 1 - \sqrt{1+\frac{\omega}{\omega_H}^2}}
+\end{center}
+
+\paragraph{}
+\textbf{Error de fase}
+\onehalfspacing
+Es la diferencia entre las fases de la ganancia ideal y la ganancia real:
+\begin{center}
+    \boxed{\Phi_v = -\arctan{(\frac{\omega}{\omega_H})}+\frac{\pi}{2}}
+\end{center}
+\newpage
+
+\section{Caso de estudio para $R_i=50[\Omega]$}
+
+\subsection{Diseño de la etapa.}
+\onehalfspacing
+Entre los requisitos de diseño mencionados se solicita que la impedancia de entrada no cargue a la fuente, que se trabaje con resistencias menores a $1[M\Omega]$ y que la ganancia para cada fuente sea de $30$ veces.
+\paragraph{}
+A partir de dichas especificaciones se obtiene:
+\begin{equation}
+    \nonumber
+    R_i=50[\Omega] \longrightarrow Z_{i1,2} \geq 10R_i
+\end{equation}
+donde $Z_{i1,2} = R$.
+\paragraph{}
+Tomando $R=1[k\Omega]$ y recordando que $A_{v1,2}(0)=30$
+\begin{equation}
+    \nonumber
+    \frac{R_f}{R}=30 \longrightarrow R_f=30[k\Omega]
+\end{equation}
+
+\subsection{Cálculo de errores.}
+\onehalfspacing
+A partir de las características eléctricas del $LM324$ se calculan los respectivos errores.
+
+\subsubsection{Errores en DC.}
+\onehalfspacing
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(v_{os}) = \left(1+2\frac{R_f}{R}\right) \cdot v_{os} = 61v_{os} = 61\cdot 2[mV]  = 122[mV]
+\end{equation}
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(I_{os}) = -R_f\cdot I_p^{-} = 30[k\Omega]\cdot I_p^{-} = 30[k\Omega]\cdot 45[\mu A]  = 1350[\mu V]
+\end{equation}
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(A_d<\infty) = \frac{FS}{T_O} = \frac{10[V]}{1640} = 6.1[mV]
+\end{equation}
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(RRMC<\infty) = 0[V]
+\end{equation}
+
+\subsubsection{Errores en AC.}
+\onehalfspacing
+\textbf{Ancho de banda de plena potencia.} 
+\paragraph{}
+\begin{equation}
+    \nonumber
+    f_{HP} = \frac{SR}{2\pi \cdot V_{pp}} =  \frac{0.5\left[ \frac{V}{uS} \right]}{2\pi \cdot 10[V]} = 8[kHz]
+\end{equation}
+
+\paragraph{}
+\textbf{Ancho de banda de pequeña señal.} 
+\paragraph{}
+\begin{equation}
+    \nonumber
+    f_{HP} = k\cdot f_T = \frac{R}{R+2R_f}\cdot f_T = 16.4[kHz]
+\end{equation}
+
+\paragraph{}
+\textbf{Error vectorial.} 
+\paragraph{}
+\paragraph{}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \rowcolor{yellow!60}
+         & \multicolumn{2}{c|}{\textbf{Avf}} & \multicolumn{2}{c|}{\textbf{Error Vectorial}} \\
+        \hline
+        \rowcolor{yellow!60}
+        \textbf{f\_h} & \textbf{Modulo} & \textbf{Fase (°)} & \textbf{Modulo} & \textbf{Fase(°)} \\
+        \hline
+        0,1 & 0,995 & -5,713  & 0,005 & 84,287 \\
+        0,2 & 0,981 & -11,316 & 0,019 & 78,684 \\
+        0,3 & 0,958 & -16,708 & 0,042 & 73,292 \\
+        0,4 & 0,928 & -21,812 & 0,072 & 68,188 \\
+        0,5 & 0,894 & -26,579 & 0,106 & 63,421 \\
+        0,6 & 0,857 & -30,979 & 0,143 & 59,021 \\
+        0,7 & 0,819 & -35,01  & 0,181 & 54,99  \\
+        0,8 & 0,781 & -38,679 & 0,219 & 51,321 \\
+        0,9 & 0,743 & -42,01  & 0,257 & 47,991 \\
+        1   & 0,707 & -45,023 & 0,293 & 44,977 \\
+        \hline
+    \end{tabular}
+    \caption{Error vectorial}
+    \label{tab:error-vectorial}
+\end{table}
+
+
+%\newpage
+
+\subsection{Simulaciones.}
+\onehalfspacing
+Realizamos las mediciones del primer caso para el siguiente circuito simulado en LTSpice:
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+	% Paths, nodes and wires:
+	\node[ground] at (8.75, 4.27){};
+	\draw (5.75, 1.625) to[american voltage source] (5.75, -0.375);
+	\draw (3.75, 5.25) to[american voltage source] (3.75, 3.5);
+	\node[ground] at (3.75, 3.5){};
+	\node[ground] at (5.75, -0.375){};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (3.125, 3.875){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (2.75, 4.25){V1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (5.25, -0){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.875, 0.375){V2};
+	\node[op amp] at (9.94, 4.76){};
+	\draw (7.75, 5.25) to[american resistor] (5.75, 5.25);
+	\draw (7.75, 3.625) to[american resistor] (5.75, 3.625);
+	\draw (10.75, 6.875) to[american resistor] (8.75, 6.875);
+	\draw (5.75, 5.25) to[american resistor] (3.75, 5.25);
+	\draw (5.75, 1.625) to[american resistor] (5.75, 3.625);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (4.625, 5.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.25, 6){Ri1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 5.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 6){R1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 4){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 4.375){R2};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (5.125, 2.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.75, 3){Ri2};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (9.625, 7.25){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.25, 7.625){V1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (4.625, 4.75){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.25, 5.125){50Ω};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 4.75){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 5.125){500Ω};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (9.625, 6.375){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.25, 6.75){15kΩ};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.25, 2.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (5.875, 3){50Ω};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 3.125){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 3.5){500Ω};
+	\draw (9.857, 5.299) |- (10, 5.5);
+	\draw (9.857, 4.221) |- (10, 4);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (10.25, 5.5){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.875, 5.875){Vcc};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (10.232, 4){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.857, 4.375){Vdd};
+	\draw (7.75, 5.25) -- (8.75, 5.25);
+	\draw (8.75, 6.875) -| (8.25, 5.25);
+	\draw (7.75, 3.625) -| (8.25, 5.25);
+	\draw (10.75, 6.875) -| (12, 4.75) -| (11.13, 4.76) -- (11.13, 4.76) -| (12, 4.75) -- (12.5, 4.75);
+	\node[ocirc] at (12.5, 4.75){};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (12.75, 4.75){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (12.375, 5.125){Vo};
+\end{tikzpicture}
+    \caption{Circuito simulado}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/bode.png}
+    \caption{Diagrama de Bode}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/Slew_Rate_Vin=600mV_PP.png}
+    \caption{Slew Rate}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/Vo_Vin=30mV_CA_Ri=50.png}
+    \caption{Factor de amplificación, $A_v = 30$}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/Vo_Ios_CC.png}
+    \caption{Vout(Ios)}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/Vo_Vos=2mV_CC.png}
+    \caption{Vout(Vos)}
+    \label{fig:enter-label}
+\end{figure}
+\newpage
+
+\section{Caso de estudio para $R_i=100[k\Omega]$}
+\subsection{Diseño de la etapa.}
+Para este segundo caso, se deben cumplir los mismos requisitos del circuito anterior.
+\paragraph{}
+A partir de dichas especificaciones se obtiene:
+\begin{equation}
+    \nonumber
+    R_i=100k[\Omega] \longrightarrow Z_{i1,2} \geq 10R_i = 1[M\Omega]
+\end{equation}
+donde $Z_{i1,2} = R$.
+\paragraph{}
+Como el valor obtenido es el límite máximo admitido se toma $R=1[M\Omega]$. Si $A_{v1,2}(0)=30$
+\begin{equation}
+    \nonumber
+    \frac{R_f}{R}=30 \longrightarrow R_f=30[M\Omega]
+\end{equation}
+\paragraph{}
+En este caso $R_f >> 10[M\Omega]$ razón por la cual se hace uso de una red $T$ para cumplir con las especificaciones solicitadas.
+
+\subsubsection{Red T.}
+\onehalfspacing
+Para el diseño de la \textit{red T} se debe tener en cuenta la relación entre $V_O$ y la corriente de alimentación $i_f$ que pasa por la resistencia $R_1$.
+\paragraph{}
+Suponiendo la entrada inversora a masa,
+\begin{align}
+    \nonumber
+    i_f &= \frac{V_O}{R_2 + R_1||R_3}\cdot R_1||R_3 \cdot \frac{1}{R_1} \\
+    \nonumber
+    i_f &= \frac{R_3}{R_2\cdot R_1 + R_2\cdot R_3 + R_3\cdot R_1} \cdot V_O \\
+    \nonumber
+    \frac{V_O}{i_f} &= \frac{R_2 \cdot R_1}{R_3} + R_2 + R_1
+\end{align}
+
+\paragraph{}
+Si $\frac{V_O}{i_f}=R_f$,
+\begin{center}
+    \boxed{R_f = \frac{R_2 \cdot R_1}{R_3} + R_2 + R_1}
+\end{center}
+
+\paragraph{}
+Tomando  $R_1 = 100[k\Omega]$ y $R_2 = 330[k\Omega]$, valores comerciales, con $R_f=30[M\Omega]$,
+\begin{center}
+    \boxed{R_3 = 1.1k[\Omega]}
+\end{center}
+
+\paragraph{}
+De esta manera se logran satisfacer todas las especificaciones.
+
+\begin{tikzpicture}
+	% Paths, nodes and wires:
+	\node[ground] at (8.75, 4.27){};
+	\draw (5.75, 1.625) to[american voltage source] (5.75, -0.375);
+	\draw (3.75, 5.25) to[american voltage source] (3.75, 3.5);
+	\node[ground] at (3.75, 3.5){};
+	\node[ground] at (5.75, -0.375){};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (3.125, 3.875){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (2.75, 4.25){V1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (5.25, -0){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.875, 0.375){V2};
+	\node[op amp] at (9.94, 4.76){};
+	\draw (7.75, 5.25) to[american resistor] (5.75, 5.25);
+	\draw (7.75, 3.625) to[american resistor] (5.75, 3.625);
+	\draw (5.75, 5.25) to[american resistor] (3.75, 5.25);
+	\draw (5.75, 1.625) to[american resistor] (5.75, 3.625);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (4.625, 5.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.25, 6){Ri1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 5.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 6){R};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 4){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 4.375){R};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (5.125, 2.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.75, 3){Ri2};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (4.625, 4.75){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (4.25, 5.125){100kΩ};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 4.75){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 5.125){1MΩ};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.25, 2.625){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (5.875, 3){100kΩ};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (6.625, 3.125){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (6.25, 3.5){1MΩ};
+	\draw (9.857, 5.299) |- (10, 5.5);
+	\draw (9.857, 4.221) |- (10, 4);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (10.25, 5.5){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.875, 5.875){Vcc};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (10.232, 4){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.857, 4.375){Vdd};
+	\draw (7.75, 5.25) -- (8.75, 5.25);
+	\draw (7.75, 3.625) -| (8.25, 5.25);
+	\node[ocirc] at (12.5, 4.75){};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (12.875, 4.875){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (12.5, 5.25){Vo};
+	\draw (10.75, 7.75) to[american resistor] (8.75, 7.75);
+	\draw (11.75, 5.25) to[american resistor] (11.75, 7.25);
+	\draw (11.75, 8.25) to[american resistor] (11.75, 10.25);
+	\node[ground, xscale=-1, yscale=-1] at (11.75, 10.25){};
+	\draw (8.75, 7.75) -- (8.5, 7.75) -- (8.25, 7.75) -| (8.25, 5.25);
+	\draw (10.75, 7.75) -- (11.75, 7.75);
+	\draw (11.75, 8.25) -| (11.75, 7.25);
+	\draw (11.13, 4.76) -| (12.5, 4.75);
+	\draw (11.75, 5.25) -| (11.75, 4.75);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (11.125, 6.25){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (10.75, 6.625){R1};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (12.25, 6.25){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (11.875, 6.625){100kΩ};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (11.125, 9.375){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (10.75, 9.75){RF};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (12.25, 9.375){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (11.875, 9.75){1.1kΩ};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (9.5, 8.125){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.125, 8.5){R2};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.715cm] at (9.5, 7.25){} node[anchor=north west, align=left, text width=0.327cm, inner sep=6pt] at (9.125, 7.625){330KΩ};
+\end{tikzpicture}
+
+\subsection{Cálculo de errores.}
+\onehalfspacing
+Con la incorporación de la red T la ganancia de lazo cambia a:
+%\begin{equation}
+%    \nonumber
+%    T = - \frac{1}{2}\cdot \frac{A_d \cdot R \cdot R_3}{\left( 
+%R_1 + \frac{R}{2} \right) \cdot \left( R_2 + R_3 \right) + R_2\cdot R_3}
+%\end{equation}
+
+\begin{equation}
+    \nonumber
+    T = - \frac{1}{2}\cdot \frac{A_d \cdot R \cdot R_3}{\left( 
+R_1 + \frac{R}{2} \right) \cdot \left( R_2 + R_3 \right)}
+\end{equation}
+
+\subsubsection{Errores en DC.}
+\onehalfspacing
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(v_{os}) = 2 \cdot \left( \frac{\left( 
+R_1 + \frac{R}{2} \right) \cdot \left( R_2 + R_3 \right)}{R \cdot R_3} \right) \cdot v_{os} = 355v_{os} = 355\cdot 2[mV]  = 710[mV]
+\end{equation}
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(I_{os}) = -R_f\cdot I_p^{-} = 30[M\Omega]\cdot I_p^{-} = 30[M\Omega]\cdot 45[\mu A]  = 1.350[V]
+\end{equation}
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(A_d<\infty) = \frac{FS}{T_O} = \frac{10[V]}{280} = 35,7[mV]
+\end{equation}
+\begin{equation}
+    \nonumber
+    \Delta V_{O}(RRMC<\infty) = 0[V]
+\end{equation}
+
+\paragraph{}
+El error total resulta: 
+
+\begin{center}
+    \boxed{\Delta V_{o} = 2,1[V]}
+\end{center}
+
+\subsubsection{Errores en AC.}
+\onehalfspacing
+\textbf{Ancho de banda de plena potencia.} 
+\paragraph{}
+\begin{equation}
+    \nonumber
+    f_{HP} = \frac{SR}{2\pi \cdot V_{pp}} =  \frac{0.5\left[ \frac{V}{uS} \right]}{2\pi \cdot 10[V]} = 8[kHz]
+\end{equation}
+
+\paragraph{}
+\textbf{Ancho de banda de pequeña señal.} 
+\paragraph{}
+\begin{equation}
+    \nonumber
+    f_{HP} = k\cdot f_T = \frac{f_T}{A_{vfi}} = 33,3[kHz]
+\end{equation}
+Debido a que el amplificador utilizado en la simulación es de segundo órden, es decir tiene un polo que no permite que que el ancho de banda llegue al calculado, sino que provoca la caída de $3dB$ en $6[kHz]$ es necesario recalcular para los $6[kHz]$:
+
+\textbf{Error vectorial.} 
+\paragraph{}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \rowcolor{yellow!60}
+         & \multicolumn{2}{c|}{\textbf{Avf}} & \multicolumn{2}{c|}{\textbf{Error Vectorial}} \\
+        \hline
+        \rowcolor{yellow!60}
+        \textbf{f\_h} & \textbf{Modulo} & \textbf{Fase (°)} & \textbf{Modulo} & \textbf{Fase(°)} \\
+        \hline
+        0,1 & 0,995 & -5,713  & 0,005 & 84,287 \\
+        0,2 & 0,981 & -11,316 & 0,019 & 78,684 \\
+        0,3 & 0,958 & -16,708 & 0,042 & 73,292 \\
+        0,4 & 0,928 & -21,812 & 0,072 & 68,188 \\
+        0,5 & 0,894 & -26,579 & 0,106 & 63,421 \\
+        0,6 & 0,857 & -30,979 & 0,143 & 59,021 \\
+        0,7 & 0,819 & -35,01  & 0,181 & 54,99  \\
+        0,8 & 0,781 & -38,679 & 0,219 & 51,321 \\
+        0,9 & 0,743 & -42,01  & 0,257 & 47,991 \\
+        1   & 0,707 & -45,023 & 0,293 & 44,977 \\
+        \hline
+    \end{tabular}
+    \caption{Error vectorial}
+    \label{tab:error-vectorial}
+\end{table}
+  
+\subsection{Simulaciones.}
+\onehalfspacing
+A continuación se adjuntan las simulaciones para el circuito bajo estudio
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/bode_barrido2_hasta100k.png}
+    \caption{Barrido en frecuencia, hasta $100kHz$}
+    \label{fig:enter-label}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Imagenes/2Vo_Ios_CC.png}
+    \caption{Vout(Vos)}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\end{document}
